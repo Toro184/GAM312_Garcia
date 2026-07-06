@@ -25,3 +25,8 @@ Saved/
 
 # Allow your test file
 !test.txt
+
+# Unreal assets
+!*.uasset
+!*.umap
+
