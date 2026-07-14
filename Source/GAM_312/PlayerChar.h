@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
+#include "Resource_M.h"
 #include "PlayerChar.generated.h"
 
 UCLASS()
@@ -27,6 +28,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	// -------------------------------------------------------------------------------------------------------------------------------
+	// Movements
 
 	UFUNCTION()
 		void MoveForward(float axisValue);
@@ -46,6 +49,8 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UCameraComponent* PlayerCamComp;
 
+	// Health, Stamina and Hunger set at 100
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
 		float Health = 100.0f;
 
@@ -55,6 +60,24 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
 		float Stamina = 100.0f;
 
+	// Resources
+
+	UPROPERTY(EditAnywhere, Category = "Resources")
+		int Wood;
+
+	UPROPERTY(EditAnywhere, Category = "Resources")
+		int Iron;
+
+	UPROPERTY(EditAnywhere, Category = "Resources")
+		int Berry;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Resources")
+		TArray<int> ResourcesArray;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Resources")
+		TArray<FString> ResourcesNameArray;
+
+	// Set health, hunger and Stamina
 	UFUNCTION(BlueprintCallable)
 		void SetHealth(float amount);
 
@@ -66,4 +89,8 @@ public:
 
 	UFUNCTION()
 		void DecreaseStats();
+		
+	// Give resources
+	UFUNCTION()
+		void GiveResource(float amount, FString resourceType);
 };
