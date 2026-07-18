@@ -2,6 +2,8 @@
 
 
 #include "PlayerChar.h"
+#include <Kismet/GameplayStatics.h>
+#include <Components/DecalComponent.h>
 
 // Sets default values
 APlayerChar::APlayerChar()
@@ -88,25 +90,32 @@ void APlayerChar::FindObject()
 	{
 		AResource_M* HitResource = Cast<AResource_M>(HitResult.GetActor());
 
-		if (HitResource)
+		if (Stamina > 5.0f)
 		{
-			FString hitName = HitResource->resourceName;
-			int resourceValue = HitResource->resourceAmount;
-
-			HitResource->totalResource = HitResource->totalResource - resourceValue;
-
-			if (HitResource->totalResource > resourceValue)
+			if (HitResource)
 			{
-				GiveResource(resourceValue, hitName);
+				FString hitName = HitResource->resourceName;
+				int resourceValue = HitResource->resourceAmount;
 
-				check(GEngine != nullptr);
-				GEngine ->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Resource Collected"));
-			}
-			else
-			{
-				HitResource->Destroy();
-				check(GEngine != nullptr);
-				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Resource Depleted"));
+				HitResource->totalResource = HitResource->totalResource - resourceValue;
+
+				if (HitResource->totalResource > resourceValue)
+				{
+					GiveResource(resourceValue, hitName);
+
+					check(GEngine != nullptr);
+					GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Resource Collected"));
+
+					UGameplayStatics::SpawnDecalAtLocation(GetWorld(), hitDecal, FVector(10.0f, 10.0f, 10.0f), HitResult.ImpactPoint, FRotator(-90, 0, 0), 2.0f);
+					
+					SetStamina(-5.0f);
+				}
+				else
+				{
+					HitResource->Destroy();
+					check(GEngine != nullptr);
+					GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Resource Depleted"));
+				}
 			}
 		}
 	}
