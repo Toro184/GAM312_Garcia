@@ -6,8 +6,12 @@
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
 #include "Resource_M.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "BuildingPart.h"
 #include "PlayerChar.generated.h"
+
+
 
 UCLASS()
 class GAM_312_API APlayerChar : public ACharacter
@@ -45,7 +49,11 @@ public:
 		void StopJump();
 
 	UFUNCTION()
+		void ToggleCrouch();
+
+	UFUNCTION()
 		void FindObject();
+
 
 	UPROPERTY(VisibleAnywhere)
 		UCameraComponent* PlayerCamComp;
@@ -81,6 +89,18 @@ public:
 	UPROPERTY(EditAnywhere, Category = "HitMaker")
 		UMaterialInterface* hitDecal;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Building Supplies")
+		TArray<int> BuildingArray;
+
+	UPROPERTY()
+		bool isBuilding;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+		TSubclassOf<ABuildingPart> BuildPartClass;
+
+	UPROPERTY()
+		ABuildingPart* spawnedPart;
+
 	// Set health, hunger and Stamina
 	UFUNCTION(BlueprintCallable)
 		void SetHealth(float amount);
@@ -91,10 +111,20 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void SetStamina(float amount);
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 		void DecreaseStats();
 		
 	// Give resources
 	UFUNCTION()
 		void GiveResource(float amount, FString resourceType);
+
+	// Updates building materials, spawn buildings and rotate buildings
+	UFUNCTION(BlueprintCallable)
+		void UpdateResources(float woodAmount, float stoneAmount, FString buildingObject);
+
+	UFUNCTION(BlueprintCallable)
+		void SpawnBuilding(int buildingID, bool& isSuccess);
+
+	UFUNCTION(BlueprintCallable)
+		void RotateBuilding();
 };
