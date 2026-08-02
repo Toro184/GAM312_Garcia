@@ -10,6 +10,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "BuildingPart.h"
 #include "PlayerWidget.h"
+#include "ObjectiveWidget.h"
 #include "PlayerChar.generated.h"
 
 
@@ -107,6 +108,15 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 		TSubclassOf<UPlayerWidget> PlayerWidgetClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UObjectiveWidget* objWidget;
+
+	UPROPERTY()
+		float objectsBuilt;
+
+	UPROPERTY()
+		float matsCollected;
 
 	// Set health, hunger and Stamina
 	UFUNCTION(BlueprintCallable)
