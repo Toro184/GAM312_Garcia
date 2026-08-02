@@ -30,9 +30,20 @@ APlayerChar::APlayerChar()
 void APlayerChar::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (PlayerWidgetClass)
+	{
+		playerUI = CreateWidget<UPlayerWidget>(GetWorld(), PlayerWidgetClass);
+
+		if (playerUI)
+		{
+			playerUI->AddToViewport();
+		}
+	}
+
 	FTimerHandle StatsTimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(StatsTimerHandle, this, &APlayerChar::DecreaseStats, 2.0f, true);
-	
+
 }
 
 // Called every frame
@@ -40,7 +51,12 @@ void APlayerChar::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (isBuilding)
+	if (playerUI)
+	{
+		playerUI->UpdateBars(Health, Hunger, Stamina);
+	}
+
+	if (isBuilding && PlayerCamComp)
 	{
 		if (spawnedPart)
 		{

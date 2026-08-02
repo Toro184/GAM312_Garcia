@@ -9,6 +9,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "BuildingPart.h"
+#include "PlayerWidget.h"
 #include "PlayerChar.generated.h"
 
 
@@ -90,7 +91,7 @@ public:
 		UMaterialInterface* hitDecal;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Building Supplies")
-		TArray<int> BuildingArray;
+		TArray<int32> BuildingArray;
 
 	UPROPERTY()
 		bool isBuilding;
@@ -100,6 +101,12 @@ public:
 
 	UPROPERTY()
 		ABuildingPart* spawnedPart;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UPlayerWidget* playerUI;
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+		TSubclassOf<UPlayerWidget> PlayerWidgetClass;
 
 	// Set health, hunger and Stamina
 	UFUNCTION(BlueprintCallable)
